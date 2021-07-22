@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/tool.png</file>
+        <file>img/start(1).png</file>
+        <file>img/start.png</file>
+        <file>img/stop.png</file>
+        <file>img/reset(1).png</file>
+        <file>img/reset.png</file>
+        <file>img/reset(2).png</file>
+        <file>img/Users(1).png</file>
+        <file>img/Users(2).png</file>
+        <file>img/Users.png</file>
+        <file>img/toolImage(1).png</file>
+        <file>img/toolImage(2).png</file>
+        <file>img/toolImage(3).png</file>
+        <file>img/wifi.png</file>
+        <file>img/usb.png</file>
+        <file>img/Ping.png</file>
+    </qresource>
+</RCC>
