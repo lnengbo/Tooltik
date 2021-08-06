@@ -1,16 +1,18 @@
-QT       += core gui sql network
+QT       += core gui sql
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
 
 QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /DEBUG
 QMAKE_CXXFLAGS_RELEASE = $$QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO
 QMAKE_LFLAGS_RELEASE = $$QMAKE_LFLAGS_RELEASE_WITH_DEBUGINFO
 
 CONFIG += c++11
-INCLUDEPATH +=$$PWD tableWidgetFiles
+
 include(tableWidgetFiles/tablewidget.pri)
-INCLUDEPATH +=$$PWD moduleFiles
 include(moduleFiles/module.pri)
+include(utils/utils.pri)
+include(breakpad/breakpadsrc.pri)
+
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -40,3 +42,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
+DISTFILES +=
+
+INCLUDEPATH += $$PWD/lib
+DEPENDPATH += $$PWD/lib
+
+LIBS += -L"$$PWD/lib/" -lNetAPI32

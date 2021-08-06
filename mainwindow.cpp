@@ -7,9 +7,9 @@
 #include <QThread>
 #include <QPainter>
 #include <QNetworkConfigurationManager>
+#include <QMessageBox>
 
 #pragma execution_character_set("utf-8")
-
 
 MainWindow *MainWindow::s_pMainWnd=NULL;
 MainWindow *MainWindow::InitInstance()
@@ -25,8 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
     s_pMainWnd=this;
     this->setWindowIcon(QIcon(":/img/tool.png"));
     this->setStyleSheet("background-color:rgb(248,248,255);");
+    this->setWindowTitle("Toolkit");
     initLayout();
     initConnect();
+    initObject();
 }
 
 MainWindow::~MainWindow()
@@ -107,12 +109,38 @@ void MainWindow::initConnect()
     connect(m_pStartButton,&VolButton::sig_clicked,this,&MainWindow::slot_buttonClick);
     connect(m_pResetButton,&MyPushButton::clicked,this,&MainWindow::slot_resetBTClick);
     connect(m_pMyListWidget,&MyListWidget::sig_Click,this,&MainWindow::slot_listWidClick);
+    connect(m_pUserButton,&MyPushButton::clicked,this,&MainWindow::slot_Messgbox);
+}
+
+void MainWindow::initObject()
+{
+    m_ptrLicenseDlg = QSharedPointer<LicenseDlg>(new LicenseDlg());
 }
 
 bool MainWindow::isNetWorkOnline()
 {
     QNetworkConfigurationManager mgr;
     return mgr.isOnline();
+}
+
+int MainWindow::checkLicense(bool flag)
+{
+    QString softname = QApplication::applicationName();
+
+    int status = CheckLicense(softname.toLocal8Bit().data(),m_nDiffTime);
+    if (status == 2) {
+        m_nDiffTime = 9999;
+        return status;
+    }
+    if(m_ptrLicenseDlg)
+    {
+        if(status <= 0)
+            m_ptrLicenseDlg->show();
+        else if(flag)
+            m_ptrLicenseDlg->show();
+    }
+
+    return status;
 }
 
 void MainWindow::slot_buttonClick(int num)
@@ -173,6 +201,12 @@ void MainWindow::slot_listWidClick(int index)
         else
             slot_debugText("网络异常",1);
     }
+}
+
+void MainWindow::slot_Messgbox()
+{
+
+    QMessageBox::about(this,"使用时间","本软件剩余使用时间"+QString::number(m_nDiffTime)+"天");
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
